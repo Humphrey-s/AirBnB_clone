@@ -2,16 +2,37 @@
 """Class BaseModel"""
 import uuid
 import datetime
+from models import storage
 
 class BaseModel:
 
-    def __init__(self, name=None, my_number=None):
+    def __init__(self, *args, **kwargs):
 
-        self.name = name
-        self.my_number = my_number
-        self.id = uuid.uuid4()
-        self.created_at = datetime.datetime.now()
-        self.updated_at = datetime.datetime.now()
+        if len(kwargs) == 0:
+
+            if isinstance(self, BaseModel):
+                self.id = uuid.uuid4()
+                self.created_at = datetime.datetime.now()
+                self.updated_at = datetime.datetime.now()
+                storage.new(self)
+        else:
+            for key in kwargs:
+                value = kwargs[key]
+
+                if key == "name":
+                    self.name = value
+
+                elif key == "my_number":
+                    self.my_number = value
+                elif key == "created_at":
+                    self.created_at = datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                elif key == "updated_at":
+                    self.updated_at = datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                elif key == "id":
+                    self.id = value
+                else:
+                    pass
+
 
     def __str__(self):
 
@@ -23,6 +44,7 @@ class BaseModel:
 
     def save(self):
         self.updated_at = datetime.datetime.now()
+        storage.save()
 
     def to_dict(self):
         
