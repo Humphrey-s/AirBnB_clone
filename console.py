@@ -92,6 +92,25 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** class doesn't exist **")
 
+    def do_all(self, line):
+        """Prints all string representation of all instances based or not on the class name
+        \n Usage: $ all <Class name>
+        """
+        if len(line) < 2:
+            objects = storage.all()
+
+            for i in objects.keys():
+                print(objects[i])
+        else:
+            b = line.split()
+
+            if b[0] == "BaseModel":
+
+                objects = storage.all()
+
+                for i in objects.keys():
+                    print(objects[i])
+
     def do_EOF(self, line):
         """EOF command to exit the program"""
         exit()
