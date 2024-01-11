@@ -2,8 +2,7 @@
 import cmd
 from models.base_model import BaseModel 
 from models import storage
-import os
-import json
+import ast
 
 
 class HBNBCommand(cmd.Cmd):
@@ -112,9 +111,7 @@ class HBNBCommand(cmd.Cmd):
                     print(objects[i])
 
     def do_update(self, line):
-        """Updates an instance based on the class name and id by adding or updating attribute
-        \nUsage: $ update <class name> <id> <attribute name> <attribute value>
-        """
+
         if len(line) == 0:
             print("** class name missing **")
         else:
@@ -136,35 +133,10 @@ class HBNBCommand(cmd.Cmd):
 
                         obj = objects[obj_id]
                         if obj_id == id_key:
-                            del(objects[obj_id])
-                            obj = str(obj)
-                            string = "{" + obj.split(" {")[1]
+                            p = obj.split("{", maxsplit=1)
+                            p[1] = "{" + p[1]
 
-                            string = string.strip("{}")
-                            ls_t = string.split(", \'")
-                            dic_t = {}
-
-                            for l in ls_t:
-
-                                l1 = l.split(": ")
-                                key = l1[0]
-                                value = l1[1]
-
-                                dic_t[key.replace("\'", "")] = value.replace("\'", "")
-                            
-                            if b[2] == "id" or b[2] != "created_at" or b[2] or "updated_at":
-                                dic_t[b[2]] = b[3]
-
-                            obj = "[{}] ({}) {}".format("Basemodel", dic_t["id"], dic_t)
-                            objects[obj_id] = obj
-
-                            storage.__objects = obj
-                            storage.save()
-                            break
-
-    def do_clear(self, line):
-
-        os.system('cls' if os.name == "nt" else "clear")
+                            print(dict(p[1]))
     def do_EOF(self, line):
         """EOF command to exit the program"""
         exit()
