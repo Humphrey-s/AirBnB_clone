@@ -17,7 +17,7 @@ class HBNBCommand(cmd.Cmd):
         if len(line) == 0:
             print("** class name missing **")
         else:
-            if line == "BaseModel":
+            if line == "BaseModel" or line == "User":
                 instance = BaseModel()
                 instance.save()
                 print(instance.id)
@@ -34,7 +34,7 @@ class HBNBCommand(cmd.Cmd):
             b = line.split()
             print(len(b))
 
-            if b[0] == "BaseModel":
+            if b[0] == "BaseModel" or b[0] == "User":
                 if len(b) < 2:
                     print("** instance id missing **")
                 else:
@@ -65,7 +65,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             b = line.split()
 
-            if b[0] == "BaseModel":
+            if b[0] == "BaseModel" or "User":
                 if len(b) < 2:
                     print("** instance id missing **")
                 else:
@@ -104,7 +104,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             b = line.split()
 
-            if b[0] == "BaseModel":
+            if b[0] == "BaseModel" or b[0] == "User":
 
                 objects = storage.all()
 
@@ -120,7 +120,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             b = line.split()
 
-            if b[0] == "BaseModel":
+            if b[0] == "BaseModel" or b[0] == "User":
                 if len(b) < 2:
                     print("** instance id missing **")
                 elif len(b) < 3:
@@ -152,10 +152,10 @@ class HBNBCommand(cmd.Cmd):
 
                                 dic_t[key.replace("\'", "")] = value.replace("\'", "")
                             
-                            if b[2] == "id" or b[2] != "created_at" or b[2] or "updated_at":
+                            if b[2] != "id" or b[2] != "created_at" or b[2] != "updated_at":
                                 dic_t[b[2]] = b[3]
 
-                            obj = "[{}] ({}) {}".format("Basemodel", dic_t["id"], dic_t)
+                            obj = "[{}] ({}) {}".format(b[0], dic_t["id"], dic_t)
                             objects[obj_id] = obj
 
                             storage.__objects = obj

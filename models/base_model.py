@@ -36,7 +36,7 @@ class BaseModel:
 
     def __str__(self):
 
-        BMstring = "[" + str(type(self).__name__) + "] "
+        BMstring = "[" + str(self.__class__.__name__) + "] "
         BMstring += " (" + str(self.id) + ") "
         BMstring += str(self.__dict__)
 
