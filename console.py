@@ -4,7 +4,14 @@ from models.base_model import BaseModel
 from models import storage
 import os
 import json
+def classes(cls):
 
+        lst = ["BaseModel", "User", "Review", "State", "Place", "City", "Amenity"]
+
+        if cls in lst:
+            return 1
+        else:
+            return -9
 
 class HBNBCommand(cmd.Cmd):
 
@@ -17,7 +24,10 @@ class HBNBCommand(cmd.Cmd):
         if len(line) == 0:
             print("** class name missing **")
         else:
-            if line == "BaseModel" or line == "User":
+
+            R = classes(line)
+
+            if R == 1:
                 instance = BaseModel()
                 instance.save()
                 print(instance.id)
@@ -32,9 +42,9 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             b = line.split()
-            print(len(b))
 
-            if b[0] == "BaseModel" or b[0] == "User":
+            R = classes(b[0])
+            if R == 1:
                 if len(b) < 2:
                     print("** instance id missing **")
                 else:
@@ -64,8 +74,9 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             b = line.split()
+            R = classes(b[0])
 
-            if b[0] == "BaseModel" or "User":
+            if R == 1:
                 if len(b) < 2:
                     print("** instance id missing **")
                 else:
@@ -103,13 +114,16 @@ class HBNBCommand(cmd.Cmd):
                 print(objects[i])
         else:
             b = line.split()
+            R = classes(b[0])
 
-            if b[0] == "BaseModel" or b[0] == "User":
+            if R == 1:
 
                 objects = storage.all()
 
                 for i in objects.keys():
                     print(objects[i])
+            else:
+                print("** class doesn't exist **")
 
     def do_update(self, line):
         """Updates an instance based on the class name and id by adding or updating attribute
@@ -119,8 +133,9 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             b = line.split()
+            R = classes(b[0])
 
-            if b[0] == "BaseModel" or b[0] == "User":
+            if R == 1:
                 if len(b) < 2:
                     print("** instance id missing **")
                 elif len(b) < 3:
@@ -161,6 +176,8 @@ class HBNBCommand(cmd.Cmd):
                             storage.__objects = obj
                             storage.save()
                             break
+            else:
+                print("** class doesn't exist **")
 
     def do_clear(self, line):
 
