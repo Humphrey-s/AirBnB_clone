@@ -4,3 +4,11 @@ header {
 	width: 100%;
 	border-bottom: 1px solid #CCCCCC;
 }
+header img {
+	display: block;
+	float: left;
+	border: 1px solid #808080;
+	margin: 30px;
+	padding-right: 2px;
+	padding-bottom: 10px;
+}
