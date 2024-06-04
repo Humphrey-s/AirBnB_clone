@@ -48,8 +48,14 @@ class FileStorage:
         """instantiate self.__objects"""
         from models.base_model import BaseModel
         from models.user import User
+        from models.review import Review
+        from models.place import Place
+        from models.state import State
+        from models.amenity import Amenity
 
-        classes = {"BaseModel": BaseModel, "User": User}
+        classes = {"BaseModel": BaseModel, "User": User, "Place": Place,
+                "Review": Review, "State": State, "Amenity": Amenity}
+
         if os.path.exists(self.__file):
             with open(self.__file, "r") as f:
                 lst = json.load(f)
