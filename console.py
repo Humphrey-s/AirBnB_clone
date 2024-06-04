@@ -164,14 +164,34 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, args):
         """handle <class>.command"""
-        arg = args.split(".")
+        from re import search
+        #arg = args.split(".")
         function_dct = {
                 "all": self.do_all,
+                "show": self.do_show,
+                "destroy": self.destroy,
                 }
 
-        lst = arg[1].split("(")
-        if lst[0] in function_dct.keys():
-            function_dct[lst[0]](arg[0])
+        #lst = arg[1].split("(")
+        #if lst[0] in function_dct.keys():
+        #    function_dct[lst[0]](arg[0])
+        r = search(r"\.", args)
+
+        if r is not None:
+            lst = [args[:r.span()[0]], args[r.span()[1]:]]
+            r = search(r"\((.*?)\)", lst[1])
+
+            if r is not None:
+                cmd = [lst[1][: r.span()[0]], r.group()[1: -1]]
+
+                if cmd[0] in function_dct.keys():
+                     line = "{} {}".format(lst[0], cmd[1].replace('"', ''))
+                     return function_dct[cmd[0]](line)
+
+
+        print("*** Unknown syntax: {}".format(args))
+        return False
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
