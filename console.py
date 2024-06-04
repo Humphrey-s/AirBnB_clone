@@ -87,7 +87,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
         else:
-                print("** instance id missing **")
+            print("** instance id missing **")
 
 
     def do_destroy(self, arg):
