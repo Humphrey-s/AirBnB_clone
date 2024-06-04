@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ console """
+
 import cmd
 from datetime import datetime
 import models
@@ -10,8 +11,7 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-from models import storage
-import shlex
+import shlex  # for splitting the line along spaces except in double quotes
 
 classes = {"BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -107,19 +107,20 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, arg):
         """Prints string representations of instances"""
-        args = arg.split()
+        args = shlex.split(arg)
+        obj_list = []
         if len(args) == 0:
-            objs = storage.all()
+            obj_dict = models.storage.all()
+        elif args[0] in classes:
+            obj_dict = models.storage.all(classes[args[0]])
         else:
-            if args[0] in classes.keys():
-                objs = storage.all(classes[args[0]])
-            else:
-                print("** class doesn't exist **")
-                return False
-
-        lst = [str(value) for value in objs.values()]
-        print("[" + ", ".join(lst) + "]")
-            
+            print("** class doesn't exist **")
+            return False
+        for key in obj_dict:
+            obj_list.append(str(obj_dict[key]))
+        print("[", end="")
+        print(", ".join(obj_list), end="")
+        print("]")
 
     def do_update(self, arg):
         """Update an instance based on the class name, id, attribute & value"""
@@ -132,7 +133,6 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] in classes:
             if len(args) > 1:
                 k = args[0] + "." + args[1]
-
                 if k in models.storage.all():
                     if len(args) > 2:
                         if len(args) > 3:
@@ -147,7 +147,6 @@ class HBNBCommand(cmd.Cmd):
                                         args[3] = float(args[3])
                                     except:
                                         args[3] = 0.0
-                            print(args)
                             setattr(models.storage.all()[k], args[2], args[3])
                             models.storage.all()[k].save()
                         else:

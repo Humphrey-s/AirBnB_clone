@@ -1,57 +1,47 @@
 #!/usr/bin/python3
 """Class BaseModel"""
-import uuid
-import datetime
+from uuid import uuid4
+from datetime import datetime
 from models import storage
+
+Tformat = "%Y-%m-%d %H:%M:%S"
 
 class BaseModel:
 
     def __init__(self, *args, **kwargs):
-
-        if len(kwargs) == 0:
-
-            if isinstance(self, BaseModel):
-                self.id = str(uuid.uuid4())
-                self.created_at = datetime.datetime.now()
-                self.updated_at = datetime.datetime.now()
-                storage.new(self)
+        if kwargs is None:
+            self.id = str(uuid4())
+            self.created_at = datetime.utcnow().strftime(Tformat)
+            self.updated_at = datetime.utcnow().strftime(Tformat)
         else:
-            for key in kwargs:
-                value = kwargs[key]
 
-                if key == "name":
-                    self.name = value
-
-                elif key == "my_number":
-                    self.my_number = value
-                elif key == "created_at":
-                    self.created_at = datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
-                elif key == "updated_at":
-                    self.updated_at = datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
-                elif key == "id":
-                    self.id = value
+            for key, value in kwargs.items():
+                setattr(self, key, value)
+            if "id" not in kwargs.keys():
+                self.id = str(uuid4())
+                self.created_at = datetime.utcnow().strftime(Tformat)
+                self.updated_at = datetime.utcnow().strftime(Tformat)
+            else:
+                if "created_at" not in kwargs.keys():
+                    self.created_at = datetime.now().strftime(Tformat)
                 else:
-                    pass
-
+                    self.updated_at = datetime.now().strftime(Tformat)
 
     def __str__(self):
-
-        BMstring = "[" + str(self.__class__.__name__) + "] "
-        BMstring += " (" + str(self.id) + ") "
-        BMstring += str(self.__dict__)
-
-        return BMstring
-
+        """return string rep of an instance"""
+        return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id,
+                                         self.__dict__)
     def save(self):
-        self.updated_at = datetime.datetime.now()
+        """save instance"""
+        from models import storage
+        storage.new(self)
         storage.save()
 
     def to_dict(self):
-        
-        b = self.__dict__
+        """returns dict representation of instance"""
+        new_dct = self.__dict__
+        new_dct["updated_at"] = datetime.now().strftime(Tformat)
+        new_dct["created_at"] = datetime.now().strftime(Tformat)
+        new_dct["__class__"] = self.__class__.__name__
 
-        b["__class__"] = type(self).__name__
-        b["updated_at"] = self.updated_at.isoformat()
-        b["created_at"] = self.created_at.isoformat()
-
-        return b
+        return new_dct
