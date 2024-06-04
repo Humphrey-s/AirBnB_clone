@@ -1,7 +1,9 @@
 #!/usr/bin/python3
+"""Place Class module"""
 from models.base_model import BaseModel
 
 class Place(BaseModel):
+    """place for AirBnB"""
 
     city_id = ""
     user_id = ""
@@ -15,6 +17,5 @@ class Place(BaseModel):
     longitude = 0.0
     amenity_ids = []
 
-    def __init__(self):
-
-        super.__init__()
+    def __init__(self, *args, **kwargs):
+        super.__init__(self, *args, **kwargs)

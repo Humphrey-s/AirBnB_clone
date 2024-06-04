@@ -1,8 +1,10 @@
 #!/usr/bin/python3
+"""Amenity module"""
 from models.base_model import BaseModel
 
 
-class State(BaseModel):
+def Amenity(BaseModel):
+    """Amenity class for AirBnB"""
 
     name = ""
 
