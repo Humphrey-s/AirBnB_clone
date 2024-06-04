@@ -52,9 +52,10 @@ class FileStorage:
         from models.place import Place
         from models.state import State
         from models.amenity import Amenity
+        from models.city import City
 
         classes = {"BaseModel": BaseModel, "User": User, "Place": Place,
-                "Review": Review, "State": State, "Amenity": Amenity}
+                "Review": Review, "State": State, "Amenity": Amenity, "City": City}
 
         if os.path.exists(self.__file):
             with open(self.__file, "r") as f:
