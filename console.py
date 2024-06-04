@@ -169,7 +169,7 @@ class HBNBCommand(cmd.Cmd):
         function_dct = {
                 "all": self.do_all,
                 "show": self.do_show,
-                "destroy": self.destroy,
+                "destroy": self.do_destroy,
                 }
 
         #lst = arg[1].split("(")
