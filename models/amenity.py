@@ -1,12 +1,13 @@
 #!/usr/bin/python3
-"""Amenity module"""
+"""Review class Module"""
 from models.base_model import BaseModel
 
 
-def Amenity(BaseModel):
-    """Amenity class for AirBnB"""
+class Amenity(BaseModel):
+    """Review for BaseModel"""
 
     name = ""
 
     def __init__(self, *args, **kwargs):
+
         super().__init__(self, *args, **kwargs)
